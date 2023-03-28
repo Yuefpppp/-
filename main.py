@@ -11,9 +11,9 @@ data_path = "./save/save.json"
 sync_folder = "D:/test/"
 #icacls "C:/Users/xiaoyueyue/Desktop/test" /grant Users:(OI)(CI)F
 
-# games_data = {}
-# with open("./save/save.json", "w") as f:
-#      json.dump(games_data, f)
+#games_data = {"test":test}
+#with open("./save/save.json", "w") as f:
+#     json.dump(games_data, f)
 
 # 创建信息框
 # saved_info_label = tk.Label(root, text="")
@@ -22,8 +22,15 @@ sync_folder = "D:/test/"
      # saved_info_label.config(text="已保存游戏记录:"+f.read())
 
 # 初始化
+
 #######################################################################
-#
+# 选择同步路径
+with open("./save/save_address_sync.json","r")as f:
+    select_sync_path = json.load(f)
+sync_folder_opt_laber = tk.Label(root, text= "当前同步路径：\n"+select_sync_path)
+sync_folder_opt_laber.pack()
+sync_folder_opt_button = tk.Button(root,text="点击此处更改同步路径",command=lambda :function.selectPath_1(sync_folder_opt_laber))
+sync_folder_opt_button.pack()
 #######################################################################
 # 创建标签和输入框，用于输入文件路径和游戏名称
 file_label = tk.Label(root, text="存档文件路径:")
@@ -65,9 +72,9 @@ game_name_menu = tk.OptionMenu(root, game_name_var, *games_data.keys())
 game_name_menu.pack()
 update_menu_button = tk.Button(root,text="刷新菜单",command=lambda :function.update_menu(data_path,game_name_menu,game_name_var))
 update_menu_button.pack()
-sync_onegame = tk.Button(root,text="同步所选择的游戏",command=lambda :function.sync(True,data_path,game_name_var,sync_folder))
+sync_onegame = tk.Button(root,text="同步所选择的游戏",command=lambda :function.sync(True,data_path,game_name_var,select_sync_path))
 sync_onegame.pack()
-sync_allgame = tk.Button(root,text="*一键同步目录内游戏*",command=lambda :function.sync(False,data_path,game_name_var,sync_folder))
+sync_allgame = tk.Button(root,text="*一键同步目录内游戏*",command=lambda :function.sync(False,data_path,game_name_var,select_sync_path))
 sync_allgame.pack()
 #######################################################################
 

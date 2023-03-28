@@ -3,12 +3,20 @@ import tkinter as tk
 from tkinter import filedialog
 import shutil
 import os
+
 def selectPath(file_entry):
     path_ = filedialog.askdirectory()
     file_entry.delete(0, tk.END)
     file_entry.insert(0, path_)
-
-
+def selectPath_1(sync_folder_opt_laber):
+    select_sync_path = filedialog.askdirectory()
+   # print(select_sync_path)
+    if select_sync_path=="":
+        return
+    else:
+        with open("./save/save_address_sync.json","w")as f:
+             json.dump(select_sync_path,f)
+        sync_folder_opt_laber.config(text= "当前同步路径：\n"+select_sync_path)
 def savethemessage(file_entry,name_entry,data_path):
     games_data = {}
     save_path = file_entry.get()
@@ -81,17 +89,17 @@ def sync(flag,data_path,sync_entry,sync_folder):
       else:
          src = game_path
          dst = sync_folder
-         print(game_name)
-         print(dst+game_name)
-         if not os.path.exists(dst + game_name):
-            print(f"错误: 目标路径 {dst} 不存在")
-            os.makedirs(dst+game_name)
-            shutil.rmtree(dst + game_name)
-            shutil.copytree(src, dst + game_name)  # 复制目录到目录
+      #   print(game_name)
+       #  print(dst+game_name)
+         if not os.path.exists(dst+"/"+game_name):
+            print(f"目标路径： {dst}/{game_name} 不存在,将自动创建文件")
+            os.makedirs(dst+"/"+game_name)
+            shutil.rmtree(dst+"/"+game_name)
+            shutil.copytree(src, dst+"/"+game_name)  # 复制目录到目录
          else:
-            os.makedirs(dst + game_name)
-            shutil.rmtree(dst + game_name)
-            shutil.copytree(src, dst + game_name)  # 复制目录到目录
+            os.makedirs(dst+"/"+game_name)
+            shutil.rmtree(dst+"/"+game_name)
+            shutil.copytree(src, dst+"/"+game_name)  # 复制目录到目录
    else:
        # 存在json文件中的地址全同步
        with open(data_path, "r") as f:
@@ -104,14 +112,14 @@ def sync(flag,data_path,sync_entry,sync_folder):
                src = value
                dst = sync_folder
                print(key)
-               print(dst + key)
-               if not os.path.exists(dst+ key):
-                   print(f"错误: 目标路径 {dst} 不存在")
-                   os.makedirs(dst + key)
-                   shutil.rmtree(dst + key)
-                   shutil.copytree(src, dst + key)  # 复制目录到目录
+               print(dst)
+               if not os.path.exists(dst+"/"+key):
+                   print(f"目标路径： {dst}/{key} 不存在,将自动创建文件")
+                   os.makedirs(dst+"/"+key)
+                   shutil.rmtree(dst+"/"+key)
+                   shutil.copytree(src, dst+"/"+key)  # 复制目录到目录
                else:
-                   shutil.rmtree(dst + key)
-                   shutil.copytree(src, dst + key)  # 复制目录到目录
+                   shutil.rmtree(dst+"/"+key)
+                   shutil.copytree(src, dst+"/"+key)  # 复制目录到目录
 
 
